@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,9 +29,17 @@ public class StudentApi {
 
 
     @GetMapping("/visi")
-    String getAllStudents(Model model) {
-        List<Studentas> studentai = studentRepostory.findAll();
+    String getAllStudents(@RequestParam(name = "filter", required = false) String filter, Model model) {
+        List<Studentas> studentai=new ArrayList<>();
+        if(filter==null){
+      studentai  = studentRepostory.findAll();}
+        else{
+            studentai=studentRepostory.findByFilter(filter);
+            studentai.forEach(studentas -> System.out.println(studentas.getVardas()));
+        }
+
         model.addAttribute("studentai", studentai);
+        model.addAttribute("filter", filter);
 
         return "index";
     }
@@ -42,28 +51,22 @@ public class StudentApi {
         return "studentuView/getPazymius";
     }
 
-    @RequestMapping(value = "delete/{id}")
-    String deletePost(@PathVariable Integer id) {
+    @RequestMapping(value = "delete",method = RequestMethod.POST)
+    String deletePost(@RequestParam(name = "id") Integer id) {
         studentRepostory.deleteById(id);
         return "redirect:/studentai/visi";
     }
 
-    @RequestMapping(value = "edit/{id}")
-    String showEdit(@PathVariable Integer id, Model model) {
+    @RequestMapping(value = "edit")
+    String showEdit(@RequestParam(name = "id") Integer id, Model model) {
         Studentas studentas = studentRepostory.findById(id).orElseThrow(() -> new IllegalArgumentException("nera Studento"));
 
         model.addAttribute("studentas", studentas);
         return "studentuView/edit";
     }
-    @RequestMapping("update/{id}")
-     String updateStudenta(@PathVariable("id") Integer id, Studentas student, Model model) {
-//        if (result.hasErrors()) {
-//            student.setId(id);
-//            return "update-student";
-//        }
-
+    @RequestMapping("update")
+     String updateStudenta( Studentas student, Model model) {
         studentRepostory.save(student);
-//        model.addAttribute("studentas", studentRepository.findAll());
         return "redirect:/studentai/visi";
     }
     @GetMapping("sukurtiForma")

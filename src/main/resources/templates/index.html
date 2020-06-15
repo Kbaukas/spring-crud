@@ -11,7 +11,16 @@
 <body>
 
 <div class="container mt-5">
+    <form class="form-group">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <button class="btn btn-outline-secondary" type="submit">Paieska</button>
+            </div>
+            <input type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon1"
+                   name="filter" th:value="${filter}">
+        </div>
 
+    </form>
     <div class="card">
         <h1 class="mx-auto mt-5">Studentai</h1>
         <div class="card-body">
@@ -35,16 +44,15 @@
                     <td><a th:text="${studentas.getPavarde()}"></a></td>
                     <td><a th:text="${studentas.getElPastas()}"></a></td>
                     <td>
-                        <form th:action="@{'/studentai/delete/{id}'(id=${studentas.id})}" th:object="${studentas}"
-                              method="delete">
-                            <!--        <input type="hidden" th:field="${studentas.getVardas()}">Delete</input>-->
+                        <form th:action="@{/studentai/delete}" th:method="POST">
+                            <input th:name="id" type="hidden" th:value="${studentas.getId()}" />
+
                             <button class="btn btn-danger" type="submit" onClick="return confirm('Ar tikrai norite istrinti?')" th:text="Delete"/>
                         </form>
                     </td>
                     <td>
-                        <form th:action="@{'/studentai/edit/{id}'(id=${studentas.id})}" th:object="${studentas}"
-                              method="get">
-                            <!--        <input type="hidden" th:field="${studentas.getVardas()}">Delete</input>-->
+                        <form th:action="@{/studentai/edit}" th:object="${studentas}" th:method="POST">
+                                    <input name="id" type=hidden th:value="${studentas.getId()}" />
                             <button class="btn btn-primary" type="submit"  th:text="Edit"/>
                         </form>
                     </td>

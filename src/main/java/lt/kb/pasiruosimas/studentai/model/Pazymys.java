@@ -12,8 +12,10 @@ public class Pazymys {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
     @ManyToOne
+    @JoinColumn(name = "studentas_id", referencedColumnName = "id")
     @JsonIgnore
     Studentas studentas;
+
     LocalDate data;
     Integer pazymys;
 
@@ -48,4 +50,9 @@ public class Pazymys {
     public void setPazymys(Integer pazymys) {
         this.pazymys = pazymys;
     }
+
+
+
 }
+
+
