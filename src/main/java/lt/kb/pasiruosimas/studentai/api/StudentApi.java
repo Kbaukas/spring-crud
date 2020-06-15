@@ -34,7 +34,7 @@ public class StudentApi {
         if(filter==null){
       studentai  = studentRepostory.findAll();}
         else{
-            studentai=studentRepostory.findByFilter(filter);
+            studentai=studentRepostory.findByFilter(filter.toLowerCase());
             studentai.forEach(studentas -> System.out.println(studentas.getVardas()));
         }
 

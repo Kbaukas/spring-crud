@@ -15,6 +15,6 @@ public interface StudentRepostory extends JpaRepository<Studentas,Integer> {
     List<Studentas> findAll();
 @EntityGraph(attributePaths={"pazymiai"})
 Optional<Studentas> findById(Integer id);
-@Query("select s from Studentas s where s.vardas like %:filter%")
+@Query("select s from Studentas s where LOWER(s.vardas) like %:filter%")
     List<Studentas> findByFilter(@Param("filter") String filter);
 }
